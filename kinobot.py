@@ -54,17 +54,22 @@ def show_quoti(message):
 
 @bot.message_handler(commands=['joke'])
 def show_joke(message):
-    joke=requests.get('https://geek-jokes.sameerkumar.website/api?format=json').json()
-    bot.send_message(message.chat.id, text=f'{joke["joke"]}')
+    joke=requests.get('https://api.chucknorris.io/jokes/random').json()
+    bot.send_message(message.chat.id, text=f'{joke["value"]}')
 
 @bot.message_handler(content_types=['text'])
 def any_msg(message):
-    if message.text == 'Привет':
-        bot.reply_to(message, text= f'Сам {message.text}')
-    keyboard = types.InlineKeyboardMarkup()
-    callback_button = types.InlineKeyboardButton(text="Нажми меня", callback_data="test")
-    keyboard.add(callback_button)
-    bot.send_message(message.chat.id, "Я – сообщение из обычного режима", reply_markup=keyboard)
+    print(message.text)
+    if message.text == 'go':
+        markup = types.ReplyKeyboardMarkup(row_width=2,one_time_keyboard=True,resize_keyboard=True)
+        itembtn1 = types.KeyboardButton('/kino')
+        itembtn2 = types.KeyboardButton('/weather')
+        itembtn3 = types.KeyboardButton('/covid')
+        itembtn4 = types.KeyboardButton('/quoti')
+        itembtn5 = types.KeyboardButton('/joke')
+        markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5)
+        bot.send_message(message.chat.id, "List full commands :", reply_markup=markup)
+
 # def any_msg(message):
 #     keyboard = types.InlineKeyboardMarkup()
 #     switch_button = types.InlineKeyboardButton(text="Нажми меня", switch_inline_query="Telegram")
